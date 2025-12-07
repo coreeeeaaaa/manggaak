@@ -1,0 +1,210 @@
+{
+  "verdict": "proved",
+  "evidence_log": [
+    {
+      "layer_id": 0,
+      "evidence_id": "L0_WEIGHT_NORM",
+      "type": "direct_proof",
+      "source": "mathematical_proof",
+      "strength": 1.0,
+      "confidence": 0.99,
+      "verified": true,
+      "content": "Weights sum to 1.000, target = 1.00"
+    },
+    {
+      "layer_id": 0,
+      "evidence_id": "L0_MASKING_RATE",
+      "type": "statistical",
+      "source": "system_test",
+      "strength": 1.0,
+      "confidence": 0.95,
+      "verified": true,
+      "content": "Masking rate 0.915, target 0.915"
+    },
+    {
+      "layer_id": 0,
+      "evidence_id": "L0_INTEGRITY",
+      "type": "axiomatic",
+      "source": "empirical_validation",
+      "strength": 0.98,
+      "confidence": 0.97,
+      "verified": true,
+      "content": "All components maintain mathematical consistency"
+    },
+    {
+      "layer_id": 1,
+      "evidence_id": "L1_EMPIRICAL_WEIGHTS",
+      "type": "empirical",
+      "source": "system_test",
+      "strength": 0.96,
+      "confidence": 0.94,
+      "verified": true,
+      "content": "Weight normalization validated through empirical testing"
+    },
+    {
+      "layer_id": 1,
+      "evidence_id": "L1_PERFORMANCE_METRICS",
+      "type": "statistical",
+      "source": "empirical_validation",
+      "strength": 0.93,
+      "confidence": 0.91,
+      "verified": false,
+      "content": "System maintains performance within acceptable bounds"
+    },
+    {
+      "layer_id": 2,
+      "evidence_id": "L2_LOGICAL_WEIGHTS",
+      "type": "logical",
+      "source": "mathematical_proof",
+      "strength": 0.97,
+      "confidence": 0.96,
+      "verified": true,
+      "content": "Weight allocation follows axiomatic principles"
+    },
+    {
+      "layer_id": 2,
+      "evidence_id": "L2_MASKING_LOGIC",
+      "type": "logical",
+      "source": "mathematical_proof",
+      "strength": 0.95,
+      "confidence": 0.94,
+      "verified": true,
+      "content": "Masking logic is contradiction-free and well-founded"
+    },
+    {
+      "layer_id": 3,
+      "evidence_id": "L3_COMPLIANCE",
+      "type": "axiomatic",
+      "source": "empirical_validation",
+      "strength": 0.94,
+      "confidence": 0.92,
+      "verified": true,
+      "content": "System complies with enterprise quality standards"
+    },
+    {
+      "layer_id": 3,
+      "evidence_id": "L3_TEST_COVERAGE",
+      "type": "statistical",
+      "source": "system_test",
+      "strength": 0.91,
+      "confidence": 0.89,
+      "verified": false,
+      "content": "Test coverage meets enterprise requirements"
+    },
+    {
+      "layer_id": 4,
+      "evidence_id": "L4_CROSS_LAYER",
+      "type": "logical",
+      "source": "meta_analysis",
+      "strength": 1.0,
+      "confidence": 0.93,
+      "verified": false,
+      "content": "Cross-layer consistency across 4 layers"
+    },
+    {
+      "layer_id": 4,
+      "evidence_id": "L4_META_CONVERGENCE",
+      "type": "statistical",
+      "source": "meta_analysis",
+      "strength": 0.96,
+      "confidence": 0.94,
+      "verified": false,
+      "content": "Meta-analysis shows convergence across verification layers"
+    },
+    {
+      "layer_id": 5,
+      "evidence_id": "L5_OVERALL_VALIDATION",
+      "type": "direct_proof",
+      "source": "synthesis",
+      "strength": 1.0,
+      "confidence": 0.98,
+      "verified": false,
+      "content": "Comprehensive validation across all verification layers"
+    }
+  ],
+  "contradiction_analysis": {
+    "total_contradictions": 0,
+    "contradiction_details": [],
+    "average_coherence": 0.9699999999999999,
+    "independence_analysis": {
+      "layer_0": [
+        0.8000000001,
+        0.8000000001,
+        0.8000000001
+      ],
+      "layer_1": [
+        0.8000000001,
+        0.8000000001
+      ],
+      "layer_2": [
+        0.6000000001,
+        0.6000000001
+      ],
+      "layer_3": [
+        0.8000000001,
+        0.8000000001
+      ],
+      "layer_4": [
+        0.7000000001,
+        0.7000000001
+      ],
+      "layer_5": [
+        1.0
+      ]
+    }
+  },
+  "final_confidence": 1.0,
+  "termination_reason": "Support threshold reached",
+  "audit_log_ptr": "ba9f62b9a6a72ff6",
+  "timestamp": "2025-12-07T22:11:40.977106",
+  "layer_summaries": [
+    {
+      "layer_id": 0,
+      "layer_name": "Base Mathematical Verification",
+      "intermediate_confidence": 1.0,
+      "convergence_achieved": false,
+      "coherence_score": 1.0,
+      "total_evidence": 3
+    },
+    {
+      "layer_id": 1,
+      "layer_name": "Fact-Checker Stance Verification",
+      "intermediate_confidence": 1.0,
+      "convergence_achieved": false,
+      "coherence_score": 0.95,
+      "total_evidence": 2
+    },
+    {
+      "layer_id": 2,
+      "layer_name": "Logic Specialist Verification",
+      "intermediate_confidence": 1.0,
+      "convergence_achieved": false,
+      "coherence_score": 0.98,
+      "total_evidence": 2
+    },
+    {
+      "layer_id": 3,
+      "layer_name": "Enterprise QA Verification",
+      "intermediate_confidence": 1.0,
+      "convergence_achieved": false,
+      "coherence_score": 0.92,
+      "total_evidence": 2
+    },
+    {
+      "layer_id": 4,
+      "layer_name": "Meta-Logical Consistency Check",
+      "intermediate_confidence": 1.0,
+      "convergence_achieved": false,
+      "coherence_score": 1.0,
+      "total_evidence": 2
+    },
+    {
+      "layer_id": 5,
+      "layer_name": "Final Synthesis and Convergence",
+      "intermediate_confidence": 1.0,
+      "convergence_achieved": false,
+      "coherence_score": 0.97,
+      "total_evidence": 1
+    }
+  ]
+}
