@@ -22,6 +22,31 @@ class_policies:
       profile: X+Y+T
   logs:
     action: archive
+profiles:
+  pii:
+    importance: 0.15
+    usage: 0.10
+    semantic: 0.05
+    temporal: 0.10
+    context: 0.05
+    risk: 0.50
+    redundancy: 0.05
+  logs:
+    importance: 0.05
+    usage: 0.20
+    semantic: 0.05
+    temporal: 0.50
+    context: 0.10
+    risk: 0.05
+    redundancy: 0.05
+  models:
+    importance: 0.35
+    usage: 0.25
+    semantic: 0.20
+    temporal: 0.10
+    context: 0.05
+    risk: 0.03
+    redundancy: 0.02
 
 pii_protect: true
 risk_keep_threshold: 0.7

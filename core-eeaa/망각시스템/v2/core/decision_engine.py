@@ -23,7 +23,8 @@ class DecisionEngine:
 
     def __init__(self, weights: Optional[Dict[str, float]] = None,
                  thresholds: Optional[Dict[str, float]] = None,
-                 class_policies: Optional[Dict[str, Dict[str, Any]]] = None):
+                 class_policies: Optional[Dict[str, Dict[str, Any]]] = None,
+                 profiles: Optional[Dict[str, Dict[str, float]]] = None):
         self.base_weights = {
             "importance": 0.30,
             "usage": 0.25,
@@ -44,6 +45,7 @@ class DecisionEngine:
         self.pii_protect = True
         # Optional per-class policies: e.g., {"pii": {"action": "mask", "profile": "X+Y+T"}}
         self.class_policies = class_policies or {}
+        self.profiles = profiles or {}
 
     def _aggregate(self, scores: ScoreVector, meta: Dict[str, Any]) -> float:
         score_dict = scores.to_dict()
@@ -70,6 +72,13 @@ class DecisionEngine:
     def select(self, scores: ScoreVector, meta: Dict[str, Any],
                budget_state: Optional[Dict[str, Any]] = None,
                reversibility_state: Optional[int] = None) -> StrategyPlan:
+        # apply class profile if any
+        data_class = meta.get("class")
+        if data_class and data_class in self.profiles:
+            self.weights = self.profiles[data_class]
+        else:
+            self.weights = self.weights or self.base_weights.copy()
+
         agg = self._aggregate(scores, meta)
         budget_pressure = self._budget_pressure(budget_state)
 
@@ -81,7 +90,6 @@ class DecisionEngine:
             return StrategyPlan(action="preserve", rationale="Protected class")
 
         # Class-based overrides
-        data_class = meta.get("class")
         if data_class and data_class in self.class_policies:
             pol = self.class_policies[data_class]
             action = pol.get("action", "retain")
