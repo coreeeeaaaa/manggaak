@@ -1,8 +1,4 @@
-"""Usage analyzer stub.
-
-Captures access frequency, temporal distribution, context relevance, cross
-reference count, collaborative access, query success rate.
-"""
+"""Usage analyzer with weighted activity features."""
 
 from typing import Any, Dict
 
@@ -12,10 +8,23 @@ def _norm(value: float) -> float:
 
 
 class UsageAnalyzer:
+    def __init__(self):
+        self.weights = {
+            "access_frequency": 0.5,
+            "query_success_rate": 0.2,
+            "recent_access_weight": 0.2,
+            "cross_reference_count": 0.1,
+        }
+
     def compute(self, item: Any, meta: Dict[str, Any]) -> float:
-        freq = float(meta.get("access_frequency", 0.0))
-        success = float(meta.get("query_success_rate", 0.5))
-        cross = float(meta.get("cross_reference_count", 0.0))
-        recent = float(meta.get("recent_access_weight", 0.5))
-        base = 0.5 * _norm(freq) + 0.2 * _norm(success) + 0.2 * _norm(recent) + 0.1 * _norm(cross)
-        return _norm(base)
+        freq = _norm(float(meta.get("access_frequency", 0.0)))
+        success = _norm(float(meta.get("query_success_rate", 0.5)))
+        recent = _norm(float(meta.get("recent_access_weight", 0.5)))
+        cross = _norm(float(meta.get("cross_reference_count", 0.0)))
+        score = (
+            self.weights["access_frequency"] * freq
+            + self.weights["query_success_rate"] * success
+            + self.weights["recent_access_weight"] * recent
+            + self.weights["cross_reference_count"] * cross
+        )
+        return _norm(score)

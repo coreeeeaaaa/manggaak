@@ -38,13 +38,14 @@ class MultidimensionalAnalyzer:
     """Composes axis calculators into a normalized ScoreVector."""
 
     def __init__(self, *, importance_calc, usage_analyzer, semantic_analyzer,
-                 temporal_modeler, context_analyzer, redundancy_analyzer):
+                 temporal_modeler, context_analyzer, redundancy_analyzer, risk_analyzer):
         self.importance_calc = importance_calc
         self.usage_analyzer = usage_analyzer
         self.semantic_analyzer = semantic_analyzer
         self.temporal_modeler = temporal_modeler
         self.context_analyzer = context_analyzer
         self.redundancy_analyzer = redundancy_analyzer
+        self.risk_analyzer = risk_analyzer
 
     def analyze(self, item: Any, meta: Dict[str, Any]) -> ScoreVector:
         """Return a ScoreVector in [0,1]^7 for the given item.
@@ -59,6 +60,6 @@ class MultidimensionalAnalyzer:
             semantic=_clip01(self.semantic_analyzer.compute(item, meta)),
             temporal=_clip01(self.temporal_modeler.compute(item, meta)),
             context=_clip01(self.context_analyzer.compute(item, meta)),
-            risk=_clip01(meta.get("risk", 0.0)),
+            risk=_clip01(self.risk_analyzer.compute(item, meta)),
             redundancy=_clip01(self.redundancy_analyzer.compute(item, meta)),
         )

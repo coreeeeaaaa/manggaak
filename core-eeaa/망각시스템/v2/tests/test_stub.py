@@ -12,6 +12,7 @@ from v2.algorithms.redundancy_analyzer import RedundancyAnalyzer
 from v2.algorithms.semantic_analyzer import SemanticAnalyzer
 from v2.algorithms.temporal_modeler import TemporalModeler
 from v2.algorithms.usage_analyzer import UsageAnalyzer
+from v2.algorithms.risk_analyzer import RiskAnalyzer
 from v2.core.decision_engine import DecisionEngine
 from v2.core.intelligent_forgetting import IntelligentForgettingSystem
 from v2.core.learning_optimizer import LearningOptimizer
@@ -32,6 +33,7 @@ def _build_system():
         temporal_modeler=TemporalModeler(),
         context_analyzer=ContextAnalyzer(),
         redundancy_analyzer=RedundancyAnalyzer(),
+        risk_analyzer=RiskAnalyzer(),
     )
     cfg = load_config()
     decision = DecisionEngine(

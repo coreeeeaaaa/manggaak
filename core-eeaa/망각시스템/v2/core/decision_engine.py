@@ -24,15 +24,16 @@ class DecisionEngine:
     def __init__(self, weights: Optional[Dict[str, float]] = None,
                  thresholds: Optional[Dict[str, float]] = None,
                  class_policies: Optional[Dict[str, Dict[str, Any]]] = None):
-        self.weights = weights or {
-            "importance": 0.3,
+        self.base_weights = {
+            "importance": 0.30,
             "usage": 0.25,
-            "semantic": 0.2,
+            "semantic": 0.20,
             "temporal": 0.15,
-            "context": 0.1,
-            "risk": 0.0,  # risk handled separately as keep-bias
-            "redundancy": 0.0,
+            "context": 0.10,
+            "risk": 0.05,
+            "redundancy": 0.05,
         }
+        self.weights = weights or self.base_weights.copy()
         self.thresholds = thresholds or {
             "preserve": 0.6,
             "compress": 0.5,
@@ -46,11 +47,17 @@ class DecisionEngine:
 
     def _aggregate(self, scores: ScoreVector, meta: Dict[str, Any]) -> float:
         score_dict = scores.to_dict()
-        base = sum(self.weights[k] * score_dict.get(k, 0.0) for k in self.weights)
-        redundancy = score_dict.get("redundancy", 0.0)
-        risk = score_dict.get("risk", 0.0)
-        # Favor keeping high risk; penalize redundancy
-        adjusted = base - 0.25 * redundancy + 0.2 * risk
+        # Apply penalties for risk/redundancy
+        agg = (
+            self.weights.get("importance", 0) * score_dict.get("importance", 0)
+            + self.weights.get("usage", 0) * score_dict.get("usage", 0)
+            + self.weights.get("semantic", 0) * score_dict.get("semantic", 0)
+            + self.weights.get("temporal", 0) * score_dict.get("temporal", 0)
+            + self.weights.get("context", 0) * score_dict.get("context", 0)
+        )
+        risk_penalty = self.weights.get("risk", 0) * score_dict.get("risk", 0)
+        red_penalty = self.weights.get("redundancy", 0) * score_dict.get("redundancy", 0)
+        adjusted = agg - risk_penalty - red_penalty
         return max(0.0, min(1.0, adjusted))
 
     def _budget_pressure(self, budget_state: Optional[Dict[str, Any]]) -> bool:

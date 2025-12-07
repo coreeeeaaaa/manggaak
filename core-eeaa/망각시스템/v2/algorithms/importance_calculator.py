@@ -1,10 +1,6 @@
-"""Importance calculator stub.
+"""Importance calculator with weighted aggregation."""
 
-Intended to combine semantic value, business impact, legal retention, user
-rating, collaborative value, creative potential into a normalized score.
-"""
-
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 
 def _norm(value: float) -> float:
@@ -12,17 +8,22 @@ def _norm(value: float) -> float:
 
 
 class ImportanceCalculator:
+    def __init__(self, weights: Optional[Dict[str, float]] = None):
+        self.weights = weights or {
+            "semantic_value": 0.25,
+            "business_impact": 0.25,
+            "legal_retention_requirement": 0.15,
+            "user_rating": 0.15,
+            "collab_value": 0.1,
+            "creative_potential": 0.1,
+        }
+
     def compute(self, item: Any, meta: Dict[str, Any]) -> float:
-        # Combine weighted hints; default mid value.
-        factors = [
-            meta.get("semantic_value", 0.5),
-            meta.get("business_impact", 0.5),
-            meta.get("legal_retention_requirement", 0.5),
-            meta.get("user_rating", 0.5),
-            meta.get("collab_value", 0.5),
-            meta.get("creative_potential", 0.5),
-        ]
-        if not factors:
+        score = 0.0
+        total_w = 0.0
+        for k, w in self.weights.items():
+            score += w * float(meta.get(k, 0.5))
+            total_w += w
+        if total_w == 0:
             return 0.5
-        avg = sum(float(f) for f in factors) / len(factors)
-        return _norm(avg)
+        return _norm(score / total_w)

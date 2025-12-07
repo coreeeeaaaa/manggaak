@@ -19,6 +19,7 @@ from ..algorithms.semantic_analyzer import SemanticAnalyzer
 from ..algorithms.temporal_modeler import TemporalModeler
 from ..algorithms.context_analyzer import ContextAnalyzer
 from ..algorithms.redundancy_analyzer import RedundancyAnalyzer
+from ..algorithms.risk_analyzer import RiskAnalyzer
 from ..storage.local_fs_adapter import LocalFSAdapter
 
 
@@ -38,6 +39,7 @@ def build_system(config_path: Path = None) -> IntelligentForgettingSystem:
         temporal_modeler=TemporalModeler(),
         context_analyzer=ContextAnalyzer(),
         redundancy_analyzer=RedundancyAnalyzer(),
+        risk_analyzer=RiskAnalyzer(),
     )
     decision = DecisionEngine(
         weights=cfg.get("weights"),

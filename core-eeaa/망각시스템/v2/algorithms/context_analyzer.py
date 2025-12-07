@@ -1,8 +1,4 @@
-"""Context analyzer stub.
-
-Considers domain relevance, user role importance, project dependency, network
-centrality, urgency, resource availability.
-"""
+"""Context analyzer with weighted factors."""
 
 from typing import Any, Dict
 
@@ -12,12 +8,21 @@ def _norm(value: float) -> float:
 
 
 class ContextAnalyzer:
+    def __init__(self):
+        self.weights = {
+            "user_role_importance": 0.25,
+            "project_dependency": 0.25,
+            "network_centrality": 0.2,
+            "urgency_factor": 0.2,
+            "resource_availability": 0.1,
+        }
+
     def compute(self, item: Any, meta: Dict[str, Any]) -> float:
-        role = float(meta.get("user_role_importance", 0.5))
-        dependency = float(meta.get("project_dependency", 0.5))
-        centrality = float(meta.get("network_centrality", 0.5))
-        urgency = float(meta.get("urgency_factor", 0.5))
-        availability = float(meta.get("resource_availability", 0.5))
-        vals = [role, dependency, centrality, urgency, availability]
-        avg = sum(vals) / len(vals)
-        return _norm(avg)
+        score = 0.0
+        total_w = 0.0
+        for k, w in self.weights.items():
+            score += w * float(meta.get(k, 0.5))
+            total_w += w
+        if total_w == 0:
+            return 0.5
+        return _norm(score / total_w)
