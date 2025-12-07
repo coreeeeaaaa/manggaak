@@ -9,6 +9,7 @@ from .multidimensional_analyzer import MultidimensionalAnalyzer
 from .multidimensional_analyzer import ScoreVector
 from .ledger import Ledger
 from .storage_adapter import StorageAdapter
+from .metrics import Metrics
 
 
 class IntelligentForgettingSystem:
@@ -18,7 +19,8 @@ class IntelligentForgettingSystem:
                  learning_optimizer: LearningOptimizer,
                  context_manager: Optional[ContextManager] = None,
                  ledger: Optional[Ledger] = None,
-                 storage_adapter: Optional[StorageAdapter] = None):
+                 storage_adapter: Optional[StorageAdapter] = None,
+                 metrics: Optional[Metrics] = None):
         self.analyzer = analyzer
         self.decision_engine = decision_engine
         self.strategy_registry = strategy_registry
@@ -26,6 +28,7 @@ class IntelligentForgettingSystem:
         self.context_manager = context_manager or ContextManager()
         self.ledger = ledger or Ledger()
         self.storage = storage_adapter or StorageAdapter()
+        self.metrics = metrics or Metrics()
 
     def process_item(self, item: Any, meta: Dict[str, Any]) -> Dict[str, Any]:
         scores: ScoreVector = self.analyzer.analyze(item, meta)
@@ -44,6 +47,7 @@ class IntelligentForgettingSystem:
         result = strategy.apply(item=item, meta=meta, plan=plan, scores=scores,
                                 context=self.context_manager)
         self.learning_optimizer.update(result.get("feedback", {}))
+        self.metrics.record_action(plan.action)
 
         # Track budget deltas heuristically based on meta size hint
         size = float(meta.get("size_bytes", 1.0))
@@ -71,6 +75,7 @@ class IntelligentForgettingSystem:
                 "allow_irreversible": meta.get("allow_irreversible", False),
                 "approval_token": bool(meta.get("approval_token")),
             },
+            "metrics": self.metrics.to_dict(),
         }
         self.ledger.log(record)
         return record

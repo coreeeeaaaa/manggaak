@@ -29,6 +29,8 @@ risk_keep_threshold: 0.7
 storage:
   ttl_default_seconds: 2592000  # 30 days
   tiers: [hot, warm, cold]
+  backend: local_fs
+  root: .data
 
 logging:
   ledger_file: null

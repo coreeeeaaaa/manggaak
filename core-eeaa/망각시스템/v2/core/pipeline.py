@@ -36,8 +36,8 @@ class ForgettingPipeline:
             elif action == "compress":
                 self._move_with_retry(item_id, content or "", "warm")
             elif action == "delete" or action == "key_destroy":
-                # nothing retained
-                pass
+                if item_id is not None:
+                    self.storage.delete_item(item_id)
         purge_info = self.storage.purge_expired()
         return {"results": results, "purge": purge_info}
 
@@ -48,6 +48,7 @@ class ForgettingPipeline:
                 return self.storage.move_to_tier(item_id, content, tier, ttl=ttl)
             except Exception as exc:
                 last_exc = exc
+                time.sleep(0.05 * (2 ** attempt))
         # log failure
         self.system.ledger.log_error("storage_move_failed", {"item_id": item_id, "tier": tier, "error": str(last_exc)})
         return {"error": str(last_exc)}

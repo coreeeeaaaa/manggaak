@@ -1,6 +1,7 @@
 """Ledger for decision/strategy events with optional file logging."""
 
 import json
+import hashlib
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -9,6 +10,7 @@ class Ledger:
     def __init__(self, logfile: Optional[Path] = None) -> None:
         self.events: List[Dict[str, Any]] = []
         self.logfile = logfile
+        self._last_hash = ""
 
     def log(self, event: Dict[str, Any]) -> None:
         # ensure event is JSON-serializable
@@ -18,6 +20,11 @@ class Ledger:
                 serializable[k] = v.__dict__
             else:
                 serializable[k] = v
+
+        serializable["prev_hash"] = self._last_hash
+        payload = json.dumps(serializable, ensure_ascii=False)
+        self._last_hash = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+        serializable["hash"] = self._last_hash
 
         self.events.append(serializable)
         if self.logfile:

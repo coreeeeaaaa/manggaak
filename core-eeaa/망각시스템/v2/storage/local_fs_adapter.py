@@ -40,11 +40,22 @@ class LocalFSAdapter(StorageBackend):
             removed = 0
             for item_id, expire_at in list(self.ttl_map.items()):
                 if now >= expire_at:
-                    for tier_dir in self.root.iterdir():
-                        if tier_dir.is_dir():
-                            path = tier_dir / f"{item_id}.bin"
-                            if path.exists():
-                                path.unlink()
+                    removed += self._delete_files(item_id)
                     self.ttl_map.pop(item_id, None)
-                    removed += 1
             return {"removed": removed}
+
+    def delete_item(self, item_id: Any) -> Dict[str, Any]:
+        with self._lock:
+            removed = self._delete_files(item_id)
+            self.ttl_map.pop(item_id, None)
+            return {"removed": removed}
+
+    def _delete_files(self, item_id: Any) -> int:
+        count = 0
+        for tier_dir in self.root.iterdir():
+            if tier_dir.is_dir():
+                path = tier_dir / f"{item_id}.bin"
+                if path.exists():
+                    path.unlink()
+                    count += 1
+        return count

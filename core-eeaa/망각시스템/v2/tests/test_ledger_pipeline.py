@@ -31,6 +31,8 @@ class TestLedgerPipeline(unittest.TestCase):
         entry = pipe.system.ledger.events[0]
         self.assertIn("policy", entry)
         self.assertIn("constraints", entry)
+        self.assertIn("hash", entry)
+        self.assertIn("prev_hash", entry)
 
 
 if __name__ == "__main__":

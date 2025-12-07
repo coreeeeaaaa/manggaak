@@ -32,3 +32,13 @@ class StorageAdapter:
                     self.ttl_map.pop(item_id, None)
                     removed += 1
             return {"removed": removed}
+
+    def delete_item(self, item_id: Any) -> Dict[str, Any]:
+        with self._lock:
+            removed = 0
+            for tier in self.tiers.values():
+                if item_id in tier:
+                    tier.pop(item_id, None)
+                    removed += 1
+            self.ttl_map.pop(item_id, None)
+            return {"removed": removed}

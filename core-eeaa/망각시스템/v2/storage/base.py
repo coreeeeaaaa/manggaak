@@ -9,3 +9,6 @@ class StorageBackend:
 
     def purge_expired(self) -> Dict[str, int]:
         raise NotImplementedError
+
+    def delete_item(self, item_id: Any) -> Dict[str, Any]:
+        raise NotImplementedError

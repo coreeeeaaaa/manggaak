@@ -15,7 +15,7 @@ def process_batch_parallel(
     # Snapshot max_workers from config if exists
     cfg_workers = max_workers
     try:
-        cfg_workers = system.decision_engine.thresholds.get("parallel_workers", max_workers)
+        cfg_workers = int(system.decision_engine.thresholds.get("parallel_workers", max_workers))
     except Exception:
         pass
 
