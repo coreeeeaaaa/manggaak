@@ -1,0 +1,38 @@
+# Default policy/config for Intelligent Forgetting System v2 (industrial-ready skeleton)
+
+weights:
+  importance: 0.3
+  usage: 0.25
+  semantic: 0.2
+  temporal: 0.15
+  context: 0.1
+  risk: 0.0
+  redundancy: 0.0
+
+thresholds:
+  preserve: 0.6
+  compress: 0.5
+  mask: 0.35
+  archive: 0.2
+
+class_policies:
+  pii:
+    action: mask
+    params:
+      profile: X+Y+T
+  logs:
+    action: archive
+
+pii_protect: true
+risk_keep_threshold: 0.7
+
+storage:
+  ttl_default_seconds: 2592000  # 30 days
+  tiers: [hot, warm, cold]
+
+logging:
+  ledger_file: null
+  level: info
+
+parallel:
+  max_workers: 4

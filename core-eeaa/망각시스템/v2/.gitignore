@@ -1,0 +1,17 @@
+# Ignore local metadata and caches
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+
+# Virtual environments
+venv/
+.env/
+
+# Local data for storage adapters
+.data/
+
+# Coverage/pytest artifacts
+.pytest_cache/
+.coverage
+htmlcov/
